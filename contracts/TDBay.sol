@@ -4,6 +4,7 @@ pragma experimental ABIEncoderV2;
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+//import "openzeppelin-solidity/contracts/lifecycle/Pausable.sol";
 
 import "./ITDBay.sol";
 import "./TDBayToken.sol";
@@ -162,7 +163,9 @@ contract TDBay is ITDBay, Ownable {
     /** 
      * @dev Initializes the contract setting a payable wallet for the owner
      */
-    constructor() public {
+    constructor() public 
+      Ownable() 
+    {
         wallet_ = msg.sender;
     }
 

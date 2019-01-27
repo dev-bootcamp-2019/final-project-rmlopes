@@ -123,7 +123,8 @@ contract Design is IDesign, Ownable {
         _;
     }
 
-    constructor() public {}
+    constructor() public 
+        Ownable() {}
 
     function () external {}
 
