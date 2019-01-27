@@ -1,0 +1,21 @@
+
+<mat-card-subtitle>
+  Add a design bid to project {{projectId}} ({{projectName}}) 
+</mat-card-subtitle>
+<mat-card-content>
+  <table mat-table>
+    <tr>
+      <mat-form-field>
+        <mat-label>Design Cost</mat-label>
+        <input matInput type="number" placeholder="Design Cost" value="{{model.designCost}}" (change)="setCost($event)">
+      </mat-form-field>
+    </tr>
+    <tr>
+      <mat-form-field>
+        <mat-label>Design Description</mat-label>
+        <textarea matInput cdkTextareaAutosize placeholder="Design Description" value="{{model.description}}" (change)="setDescription($event)"></textarea>
+      </mat-form-field>
+      <button mat-button (click)="placeBid()">Place Bid</button>
+  </tr>
+  </table>
+</mat-card-content>

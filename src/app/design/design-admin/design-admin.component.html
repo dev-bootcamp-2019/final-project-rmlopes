@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-title>Design Contract Parameters</mat-card-title>
+  <mat-card-content>
+      <mat-form-field>
+          <mat-label>Master Contract: </mat-label>
+          <input type="text" matInput id="masterContract" placeholder="Master Contract Address" (change)="setMasterContract($event)" value="{{model.masterContract}}">
+      </mat-form-field>
+      <button mat-button id="setMasterContract" (click)="updateMasterContract()">Update Master</button>
+      <button mat-button id="setCurrentMasterContract" (click)="setCurrentMasterContract()">Use Current 3DBay Contract (this)</button>
+  </mat-card-content>
+</mat-card>

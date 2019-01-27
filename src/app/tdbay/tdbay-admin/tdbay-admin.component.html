@@ -1,0 +1,92 @@
+<mat-card>
+  <mat-card-title>3DBay Contract Setup</mat-card-title>
+  <p>Update each parameter individually, or set all the values and use the Initialize Contract button.</p>
+  
+  <mat-card-subtitle>Contract addresses</mat-card-subtitle>
+  <mat-card-content>
+    <mat-form-field>
+        <mat-label>Token Contract: </mat-label>
+        <input type="text" matInput id="tokenContract" placeholder="Token Contract Address" (change)="setTokenContract($event)" value="{{model.tokenContract}}">
+    </mat-form-field>
+    <button mat-button id="setTokenContract" (click)="updateTokenContract()">Update</button>
+  </mat-card-content>
+  <mat-card-content>  
+    <mat-form-field>
+        <mat-label>Design Contract: </mat-label>
+        <input type="text" matInput id="designContract" placeholder="Design Contract Address" (change)="setDesignContract($event)" value="{{model.designContract}}">
+    </mat-form-field>
+    <button mat-button id="setDesignContract" (click)="updateDesignContract()">Update</button>
+  </mat-card-content>
+
+  <mat-card-subtitle>Costs</mat-card-subtitle>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Project cost: </mat-label>
+      <input type="text" matInput id="projectCostInput" placeholder="Project Cost" (change)="setProjectCost($event)" value="{{model.projectCost}}">
+    </mat-form-field>
+    <button mat-button id="projectCostInputSet" (click)="updateProjectCost()">Update</button>
+  </mat-card-content>
+  <mat-card-content>
+    <mat-form-field>
+        <mat-label>Design Bid Cost:</mat-label>
+      <input type="text" matInput id="designBidCostInput" placeholder="Design Bid Cost" (change)="setDesignBidCost($event)" value="{{model.designBidCost}}">
+    </mat-form-field>
+    <button mat-button id="projectCostInputSet" (click)="updateDesignBidCost()">Update</button>
+  </mat-card-content>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label><span>Manufacture Bid Cost: </span></mat-label>
+      <input type="text" matInput id="manufactureBidCostInput" placeholder="Manufacture Bid Cost" (change)="setManufactureBidCost($event)" value="{{model.manufactureBidCost}}">
+    </mat-form-field>
+    <button mat-button id="projectCostInputSet" (click)="updateManufactureBidCost()">Update</button>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button id="initializeContract" (click)="callInitializeContract()">Initialize Contract</button>
+  </mat-card-actions>  
+</mat-card>
+
+<br />
+<mat-card>
+  <mat-card-title>Project Creation Fee</mat-card-title>
+  <mat-card-content>
+    <mat-form-field>
+        <mat-label><span>Fee: </span></mat-label>
+        <input type="text" matInput id="projectFee" placeholder="Project Fee" (change)="setProjectFee($event)" value="{{model.projectFee}}">
+    </mat-form-field>
+    
+    <mat-form-field>
+        <mat-label><span>Rate: </span></mat-label>
+        <input type="text" matInput id="projectFeeRate" placeholder="Project Fee Rate" (change)="setProjectFeeRate($event)" value="{{model.projectFeeRate}}">
+    </mat-form-field>
+    <mat-card-actions>
+        <button mat-button id="updateFee" (click)="updateProjectFee()">Update Fee</button>
+    </mat-card-actions>
+  </mat-card-content>
+</mat-card>
+
+<br />
+<mat-card>
+  <mat-card-title>Wallet & Funds</mat-card-title>
+  <mat-card-content>
+    <mat-form-field>
+        <mat-label><span>Wallet Address:</span></mat-label>
+          <input type="text" matInput id="walletContract" placeholder="Wallet Contract Address" (change)="setWallet($event)" value="{{model.wallet}}">
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-content>
+      <span>Current Contract Balance: {{model.balance}}</span> 
+      <br />
+      
+      <mat-form-field>
+        <mat-label>Amount to Withdraw</mat-label>
+          <input type="text" matInput id="withdrawAmmount" placeholder="Amount to withdraw" (change)="setWithdrawAmount($event)" value="0">
+      </mat-form-field>
+      <mat-card-actions>
+        <button mat-button id="changeWallet" (click)="updateWallet()">Change Wallet</button>
+        <button mat-button id="withdraw" (click)="withdrawToWallet()">Withdraw</button>
+      </mat-card-actions>
+  </mat-card-content>
+</mat-card>
+
+<br />
+<app-design-admin></app-design-admin>

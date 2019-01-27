@@ -1,0 +1,72 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{model.Name}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-card-subtitle>
+        Project Details:
+    </mat-card-subtitle>
+    <mat-grid-list *ngIf="!editMode" cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <table mat-table>
+          <tr>
+            <td>Id:</td><td>{{model.Id}}</td>
+          </tr>
+          <tr>
+            <td>State:</td><td>{{model.State}}</td>
+          </tr>
+          <tr>
+            <td>Owner:</td><td>{{model.Owner}}</td>
+          </tr>
+          <tr>
+            <td>DesignId:</td><td>{{model.DesignId}}</td>
+          </tr>
+          <tr>
+              <td>Description:</td><td><pre style="font: inherit">{{model.Description}}</pre></td>
+            </tr>
+        </table>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <img [src]="imgURL" alt="Object Image">
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list *ngIf="editMode" cols="2" rowHeight="2:1">
+        <mat-grid-tile>
+          <table mat-table>
+            <tr>
+              <td>Id:</td><td>{{model.Id}}</td>
+            </tr>
+            <tr>
+              <td>State:</td><td>{{model.State}}</td>
+            </tr>
+            <tr>
+              <td>Owner:</td><td>{{model.Owner}}</td>
+            </tr>
+            <tr>
+              <td>DesignId:</td><td>{{model.DesignId}}</td>
+            </tr>
+            <tr>
+                <td>Description:</td><td><pre style="font: inherit">{{model.Description}}</pre></td>
+              </tr>
+          </table>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <!--img src="https://ipfs.io/ipfs/{{model.IPFSHash}}" alt="Object Image"-->
+            <app-image-upload (imgLoaded)="onImgLoaded($event)"></app-image-upload>
+        </mat-grid-tile>
+      </mat-grid-list>
+    
+    <app-design-bid-list *ngIf="isOwner" [projectId]="model.Id" [projectOwner]="model.Owner"></app-design-bid-list>
+    
+    <app-new-design-bid *ngIf="!hideBid" (bidAdded)="onBid($event)" [projectId]="model.Id" [projectName]="model.Name"></app-new-design-bid>
+
+    <mat-action-row>
+        <button mat-button *ngIf="isOwner&&!editMode" (click)="editMode=true">Edit</button>
+        <button mat-button *ngIf="editMode" (click)="onSave()">Save</button>
+        <button mat-button *ngIf="editMode" (click)="editMode=false">Cancel</button>
+        <button mat-button *ngIf="!isOwner" (click)="hideBid=false">Add Design Bid</button>
+    </mat-action-row>
+</mat-expansion-panel>

@@ -1,0 +1,30 @@
+<!--mat-toolbar color="primary">{{title}}</mat-toolbar>
+<h3>{{welcomeMessage}}</h3> -->
+
+
+<mat-toolbar color="primary">
+        <mat-toolbar-row>
+        <button mat-button routerLink="/">
+        <mat-icon><h1>{{title}}</h1></mat-icon> 
+            </button>
+        </mat-toolbar-row>
+        <!-- This fills the remaining space of the current row -->
+    <mat-toolbar-row>
+            <button mat-button routerLink="/projects">Projects</button>
+            <button mat-button routerLink="/tdbay">My Tokens</button>
+            <button mat-button routerLink="/tdbay-admin">3DBay Admin</button>
+            <button mat-button routerLink="/designs">My Designs</button>
+            <button mat-button routerLink="/owner-projects">My Projects</button>
+    </mat-toolbar-row>
+    
+    </mat-toolbar>
+
+
+
+<!--nav>
+    <a routerLink="/projects" routerLinkActive="active">Projects</a>
+    <a routerLink="/tdbay" routerLinkActive="active">My Tokens</a>
+    <a routerLink="/tdbay-admin" routerLinkActive="active">3DBay Administration</a>
+</nav>-->
+<br />
+<router-outlet></router-outlet>

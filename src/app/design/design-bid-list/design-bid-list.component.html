@@ -1,0 +1,7 @@
+<mat-card-subtitle>
+  Available Bids:
+</mat-card-subtitle>
+<app-design-bid-details *ngFor="let id of bids" 
+    [bidId]="id"
+    [projectOwner]="projectOwner">
+</app-design-bid-details>

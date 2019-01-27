@@ -1,0 +1,6 @@
+<table mat-table>
+    <tr><img [src]="imgURL" height="200" *ngIf="imgURL" /></tr>
+    <tr>    
+        <input mat-button #file type="file" accept='image/*' (change)="preview(file.files)" />
+    </tr>
+</table>

@@ -1,0 +1,8 @@
+<mat-accordion>
+  <app-project-details *ngFor="let project of model.projects"
+    [project]="project">
+  </app-project-details>
+</mat-accordion>
+
+<br />
+<app-new-project></app-new-project>
