@@ -176,6 +176,7 @@ contract TDBay is ITDBay, Ownable {
       Ownable() 
     {
         wallet_ = msg.sender;
+        stopped = false;
     }
 
     function () external {
