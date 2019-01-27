@@ -4,21 +4,18 @@ pragma solidity ^0.5.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/TDBay.sol";
-import "../contracts/TDBayToken.sol";
 import "../contracts/UserProxies.sol";
 
 
 contract TestTDBayAddProject {
 	
 	uint public initialBalance = 1 ether;
-	TDBay tdbcontract;
-	IDesign designContract;
-	//address payable tdbcontract;
-	IERC20 public tc;
-	uint pcost = 2000000;
-	uint dcost = 1000000;
-	uint mcost = 50000;
+	TDBay private tdbcontract;
+	IDesign private designContract;
+	IERC20 private  tc;
+	uint private  pcost = 20000;
+	uint private dcost = 10000;
+	uint private mcost = 5000;
 
 	UserProxy theUser;
 
@@ -35,13 +32,13 @@ contract TestTDBayAddProject {
 									pcost, dcost, mcost);
 
 		designContract.setMaster(ITDBay(tdbcontract));
-
-		theUser = new UserProxy(address(tdbcontract));
-		address(theUser).transfer(.5 ether);
 	}
 
 	// Test if the a new project is created correctly
 	function testAddProject() public{
+		theUser = new UserProxy(address(tdbcontract));
+		address(theUser).transfer(.5 ether);
+
 		uint initBalanceContract = address(tdbcontract).balance;
 		uint initOwnerBalance = address(this).balance;
 		uint initUserBalance = address(theUser).balance;
@@ -72,17 +69,6 @@ contract TestTDBayAddProject {
 		Assert.equal(address(theUser).balance, 
 					 initUserBalance - pcost, 
 					 "Project cost funds not deduced from user.");
-
-		//Check user projects mapping
-
-	}
-
-	// Test if the a new project is created correctly
-	function testAddProjectNotEnoughFunds() public{
-		string memory name = "MyProject";
-		(bool r, ) = address(tdbcontract).call.value(1)(
-			abi.encodeWithSignature("addProject(string, string)",name));
-		Assert.isFalse(r, "Project creation should have failed.");
 	}
 
 	function () external payable{}

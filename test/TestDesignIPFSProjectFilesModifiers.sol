@@ -4,10 +4,6 @@ pragma solidity ^0.5.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/TDBay.sol";
-import "../contracts/TDBayToken.sol";
-import "../contracts/IDesign.sol";
-import "../contracts/Design.sol";
 import "../contracts/UserProxies.sol";
 
 contract TestDesignIPFSProjectFilesModifiers {

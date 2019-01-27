@@ -4,10 +4,6 @@ pragma solidity ^0.5.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/TDBay.sol";
-import "../contracts/TDBayToken.sol";
-import "../contracts/IDesign.sol";
-import "../contracts/Design.sol";
 import "../contracts/UserProxies.sol";
 
 contract TestDesign {
@@ -27,7 +23,6 @@ contract TestDesign {
 		mcost = 5000;
 		tokenContract = IERC20(DeployedAddresses.TDBayToken());
 		designContract = new Design();
-		du1 = new DesignUserProxy(address(designContract));
 	}
 
 	function beforeAll() public{
@@ -49,6 +44,8 @@ contract TestDesign {
 	// Tests adding a design bid to a project
 	function testAddDesignBid() public{
 		uint costToDesign = 0.1 ether;
+
+		du1 = new DesignUserProxy(address(designContract));
 		du1.addDesignBid.value(dcost)(0, costToDesign, "A description");
 
 		(uint _did, uint _projectId, 
