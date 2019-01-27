@@ -23,13 +23,17 @@ contract Design is IDesign, Ownable {
         State state;
         string previewIpfsHash; 
         string ipfsHash;
+        address owner;
+        string description;
     }
 
     uint256 public currentId;
     ITDBay public tdbContract;
     ProjectDesign[] public designs;
     mapping (uint256 => mapping(uint256 => bool)) public projectToDesigns;
-    mapping (address => mapping (uint256 => bool)) public userOwnsDesign;
+    mapping (uint256 => uint256[]) public projectToDesignList;
+    mapping (address => uint256[]) public ownerToDesignList;
+
     ITDBay.Fee public designFee = ITDBay.Fee(1,1000);
     
     event DesignBidAccepted(uint256 indexed _id);
@@ -63,7 +67,7 @@ contract Design is IDesign, Ownable {
      * @param _id The id of the design
      */
     modifier ownsDesign(address _caller, uint256 _id) {
-        require(userOwnsDesign[_caller][_id],
+        require(_caller == designs[_id].owner,
                 "User does not own this design");
         _;
     }
@@ -87,6 +91,17 @@ contract Design is IDesign, Ownable {
                 "The project does not exist in the TDBay contract");
         _;
     }
+
+    /** 
+     * @dev Checks if the caller is the project owner
+     * @param _id The project id
+     */
+    modifier isProjectOwner(address _caller, uint256 _id) {
+        require(_caller == tdbContract.getProjectOwner(_id),
+                "The caller is not the project owner");
+        _;
+    }
+
 
     /** 
      * @dev Checks if enough was sent to bid with a design
@@ -126,22 +141,46 @@ contract Design is IDesign, Ownable {
      * @param _projectId The id of the target project.
      * @param _cost The cost to provide the complete design.
      */
-    function addDesignBid(uint _projectId, uint256 _cost) 
+    function addDesignBid(uint _projectId, uint256 _cost, string calldata description) 
         external
         payable
         checkDesignBidValue(msg.value)
         projectExists(_projectId)
     {
         ProjectDesign memory d = 
-            ProjectDesign(currentId, _projectId, _cost, State.Bid, "", "");
+            ProjectDesign(currentId, _projectId, _cost, State.Bid, "", "", msg.sender, description);
         designs.push(d);
         projectToDesigns[_projectId][d.id] = true;
-        userOwnsDesign[msg.sender][d.id] = true;
+        projectToDesignList[_projectId].push(d.id);
+        ownerToDesignList[address(msg.sender)].push(d.id);
         currentId++;
 
         uint256 _fee = tdbContract.designBidCost().mul(designFee.fee).div(designFee.rate);
         tdbContract.wallet().transfer(_fee); 
         emit DesignFeeTransfered(_fee);
+    }
+
+    /**
+     * @dev Gets the design ids for a given project
+     * @param _projectId the project id
+     * @return uint256[] The list of design ids for a project
+     */
+    function getDesigns(uint256 _projectId) public view
+        projectExists(_projectId)
+        isProjectOwner(address(msg.sender), _projectId) 
+        returns(uint256[] memory){
+        //TODO: verify project owner is calling
+        return projectToDesignList[_projectId];
+    }
+
+    /**
+     * @dev Gets the design ids for the caller
+     * @return uint256[] The list of design ids for the caller
+     */
+    function getOwnerDesigns() public view
+        returns(uint256[] memory){
+        //TODO: verify project owner is calling
+        return ownerToDesignList[address(msg.sender)];
     }
 
     /**
@@ -181,6 +220,7 @@ contract Design is IDesign, Ownable {
     /** 
      * @dev Gets the state of a design.
      * @param _id The id of the design.
+     * @return uint256 the state of the bid
      */
     function getState(uint256 _id) external view bidExists(_id) returns (uint256) {
         return uint256(designs[_id].state);
@@ -188,23 +228,52 @@ contract Design is IDesign, Ownable {
 
     /** 
      * @dev Get the IPFS hash for the design CAD file/folder.
-     * @return _ipfsHash The IPFS Hash for the design CAD file/folder.
+     * @param _id The id of the design.
+     * @return string The IPFS Hash for the design CAD file/folder.
      */
-    function getDesignFiles(uint256 _id) external view returns (string memory) {
+    function getDesignFiles(uint256 _id) external view bidExists(_id) returns (string memory) {
         return designs[_id].ipfsHash;
     }
 
     /** 
-     * @dev Get the cost for this contract bid.
-     * @return _cost The cost to produce this design.
+     * @dev Get the IPFS hash for the design CAD file/folder.
+     * @param _id The id of the design.
+     * @return string The IPFS Hash for the design CAD file/folder.
      */
-    function getDesignCost(uint256 _id) external view returns(uint256) {
+    function getPreviewFiles(uint256 _id) external view bidExists(_id) returns (string memory) {
+        return designs[_id].previewIpfsHash;
+    }
+
+    /** 
+     * @dev Get the owner address for a bid
+     * @param _id The id of the design.
+     * @return address The address of the owner
+     */
+    function getOwner(uint256 _id) external view bidExists(_id) returns (address) {
+        return designs[_id].owner;
+    }
+
+    /** 
+     * @dev Get the IPFS hash for the design CAD file/folder.
+     * @param _id The id of the design.
+     * @return string The description of the bid
+     */
+    function getDescription(uint256 _id) external view bidExists(_id) returns (string memory) {
+        return designs[_id].description;
+    }
+
+    /** 
+     * @dev Get the cost for this contract bid.
+     * @param _id The id of the design.
+     * @return uint256 The cost to produce this design.
+     */
+    function getDesignCost(uint256 _id) external view bidExists(_id) returns(uint256) {
         return designs[_id].cost;
     }
 
     /** 
      * @dev Gets the TDBay master contract.
-     * @return The master TDBay contract address
+     * @return address The master TDBay contract address
      */
     function getMaster() public view returns(address) {
         return address(tdbContract);
@@ -212,10 +281,12 @@ contract Design is IDesign, Ownable {
 
     /* * 
      * @dev Updates the IPFS hash for the preview of the design (image file)
+     * @param _id The id of the design.
      * @param _hash The new IPFS hash of the image file/folder
      */
     function updatePreview(uint256 _id, string memory _hash) 
         public
+        bidExists(_id) 
         ownsDesign(msg.sender, _id)
         isBid(_id)
     {
@@ -226,10 +297,12 @@ contract Design is IDesign, Ownable {
 
     /* * 
      * @dev Updates the IPFS hash for the design CAD file/folder
+     * @param _id The id of the design.
      * @param _hash The new IPFS hash of the CAD file/folder
      */
     function updateProjectFiles(uint256 _id, string memory _hash) 
         public
+        bidExists(_id) 
         ownsDesign(msg.sender, _id)
         isAccepted(_id)
     {

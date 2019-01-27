@@ -21,11 +21,11 @@ contract UserProxy {
         tdb.withdraw(_value);
     }
 
-    function addProject(string memory name, uint pcost) 
+    function addProject(string memory name, string memory description, uint pcost) 
         public 
         payable
     {
-        tdb.addProject.value(pcost)(name);
+        tdb.addProject.value(pcost)(name, description, "");
     }
 
     function updateProjectFiles(string memory _hash, uint _pId) public {
@@ -46,8 +46,8 @@ contract DesignUserProxy {
         dcontract = Design(_dcontract);
     }
 
-    function addDesignBid(uint _projectId, uint256 _cost) public payable {
-        dcontract.addDesignBid.value(msg.value)(_projectId, _cost);
+    function addDesignBid(uint _projectId, uint256 _cost, string memory _desc) public payable {
+        dcontract.addDesignBid.value(msg.value)(_projectId, _cost, _desc);
     }
 
     function updatePreview(uint _id, string memory _hash) public {

@@ -35,4 +35,10 @@ interface ITDBay {
       * @return The wallet address
       */
     function wallet() external view returns (address payable);
+
+    /** @dev Gets the project owner
+      * @param _id The project id.
+      * @return address The address of the project owner.
+      */
+    function getProjectOwner(uint _id) external view returns (address);
 }

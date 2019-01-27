@@ -27,6 +27,7 @@ contract TDBay is ITDBay, Ownable {
         address payable owner;
         string ipfsHash;
         uint256 designId;
+        string description;
         //IManufactureContract manufactureContract;
     }
 
@@ -310,7 +311,7 @@ contract TDBay is ITDBay, Ownable {
     /** @dev Creates a new project owned by the caller
       * @param _name The name of the new project.
       */
-    function addProject(string memory _name) 
+    function addProject(string memory _name, string memory _description, string memory _hash) 
         public 
         payable
         checkProjectValue(msg.value)
@@ -319,8 +320,9 @@ contract TDBay is ITDBay, Ownable {
                                                 ProjectState.Designing,
                                                 _name, 
                                                 msg.sender, 
-                                                "", 
-                                                0);
+                                                _hash, 
+                                                0,
+                                                _description);
         projects.push(_project);
         currentId += 1;
         userToProject[msg.sender].push(_project);

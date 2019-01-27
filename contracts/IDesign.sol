@@ -9,7 +9,7 @@ interface IDesign {
     
     function acceptBid(uint256 _id) external;
     
-    function addDesignBid(uint _projectId, uint256 _cost) external payable;
+    function addDesignBid(uint _projectId, uint256 _cost, string calldata _description) external payable;
     
     function designInProject(uint256 _projectId, uint256 _designId) external returns (bool);
 
