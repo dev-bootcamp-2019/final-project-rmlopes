@@ -4,7 +4,6 @@ pragma experimental ABIEncoderV2;
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-//import "openzeppelin-solidity/contracts/lifecycle/Pausable.sol";
 
 import "./ITDBay.sol";
 import "./TDBayToken.sol";
@@ -31,15 +30,15 @@ contract TDBay is ITDBay, Ownable {
         string description;
         //IManufactureContract manufactureContract;
     }
-
+    
+    bool private stopped = false;
     uint256 private currentId;
     mapping (address => TDBProject[]) private userToProject;
-    //mapping (address => address[]) userToDesign;
     uint256 private projectCost_;
     uint256 private designBidCost_;
     uint256 private manufactureBidCost_;
+
     // project fee sent to the owner on per mileage basis (project_cost*project_fee/fee_rate)
-    
     Fee public projectFee = Fee(2, 1000);
     address payable public wallet_;
 
@@ -161,6 +160,16 @@ contract TDBay is ITDBay, Ownable {
     }
 
     /** 
+     * @dev Circuit breaker modifier if not stopped
+     */
+    modifier whenNotPaused { require(!stopped); _; }
+
+    /** 
+     * @dev Circuit breaker modifier if stopped
+     */
+    modifier whenPaused { require(stopped); _; }
+
+    /** 
      * @dev Initializes the contract setting a payable wallet for the owner
      */
     constructor() public 
@@ -211,6 +220,13 @@ contract TDBay is ITDBay, Ownable {
      */
     function getProjectCreationFee() external view returns(Fee memory) {
          return projectFee;
+    }
+
+    /** 
+     * @dev Circuit breaker toggler
+     */
+    function toggleContractActive() public onlyOwner() {
+        stopped = !stopped;
     }
 
     /** @dev  Allows the owner to update the the project cost.
@@ -297,7 +313,7 @@ contract TDBay is ITDBay, Ownable {
     /** @dev Allows the owner to withdraw from the contracts balance
       * @param _value The value to withdraw
       */
-    function withdraw(uint256 _value) public onlyOwner() {
+    function withdraw(uint256 _value) public onlyOwner() whenPaused(){
         require(_value <= address(this).balance,
                 "Not enough balance to withdraw.");
         emit OwnerWithdrawal(wallet_, _value);
@@ -317,6 +333,7 @@ contract TDBay is ITDBay, Ownable {
     function addProject(string memory _name, string memory _description, string memory _hash) 
         public 
         payable
+        whenNotPaused()
         checkProjectValue(msg.value)
     {
         TDBProject memory _project = TDBProject(currentId, 
