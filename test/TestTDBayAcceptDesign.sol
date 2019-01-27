@@ -39,9 +39,10 @@ contract TestTDBayAcceptDesign {
 
 		theUser = new UserProxy(address(tdbcontract));
 		address(theUser).transfer(.5 ether);
-		theUser.addProject("TheUserProject", pcost);
+		string memory description = "Simply a test project with a short description";
+		theUser.addProject("TheUserProject", description, pcost);
 
-		designContract.addDesignBid.value(dcost)(0, 0.1 ether);
+		designContract.addDesignBid.value(dcost)(0, 0.1 ether,"");
 	}
 
 	// Test accepting a design bid
@@ -49,9 +50,9 @@ contract TestTDBayAcceptDesign {
 		uint pid = 0;
 		uint did = 0;
 		//DesignUserProxy du = DesignUserProxy(address(designContract));
-		designContract.addDesignBid.value(dcost)(pid, 0.1 ether);
+		designContract.addDesignBid.value(dcost)(pid, 0.1 ether, "");
 		theUser.acceptDesign(pid, did);
-		(, TDBay.ProjectState _state,,,,uint256 _designId) = tdbcontract.projects(pid);
+		(, TDBay.ProjectState _state,,,,uint256 _designId,) = tdbcontract.projects(pid);
 		Assert.equal(_designId, did, "Design id no set properly");
 		Assert.equal(uint256(_state), uint(TDBay.ProjectState.Manufacturing), 
 					 "Project state not updated.");
@@ -84,7 +85,8 @@ contract TestTDBayAcceptDesign {
 		uint did = 0;
 		
 		string memory name = "MyProject2";
-		theUser.addProject(name, pcost);
+		string memory description = "Simply a test project with a short description";
+		theUser.addProject(name, description, pcost);
 
 		(bool r,) = address(theUser).call(
 			abi.encodeWithSignature("acceptDesign(uint256,uint256)",pid, did));
@@ -98,7 +100,7 @@ contract TestTDBayAcceptDesign {
 		uint did = 0;
 		
 		u2 = new UserProxy(address(tdbcontract));
-		designContract.addDesignBid.value(dcost)(pid, 0.1 ether);
+		designContract.addDesignBid.value(dcost)(pid, 0.1 ether, "");
 		
 		(bool r,) = address(u2).call(
 			abi.encodeWithSignature("acceptDesign(uint256,uint256)",pid, did));

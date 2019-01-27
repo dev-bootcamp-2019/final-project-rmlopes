@@ -44,7 +44,8 @@ contract TestDesign {
 		//Add a project to the TDBay contract
 		//owner will be this test class
 		string memory name = "MyProject";
-		tdbContract.addProject.value(pcost)(name);
+		string memory description = "Simply a test project with a short description";
+		tdbContract.addProject.value(pcost)(name, description, "");
 	}
 
 	// Tests the initialization of the TDBay master contract
@@ -71,8 +72,8 @@ contract TestDesign {
 
 		uint costToDesign = 0.1 ether;
 		(bool r, ) = address(du1).call.value(dcost)(
-			abi.encodeWithSignature("addDesignBid(uint256,uint256)",
-									projId, costToDesign));
+			abi.encodeWithSignature("addDesignBid(uint256,uint256,string)",
+									projId, costToDesign, "A description"));
 
 		Assert.isTrue(r, "Failure adding project");
 
@@ -81,7 +82,9 @@ contract TestDesign {
 		 uint _cost, 
 		 Design.State _state, 
 		 string memory _previewIpfsHash, 
-		 string memory _ipfsHash) = designContract.designs(0);
+		 string memory _ipfsHash,
+		 address _owner,
+		 string memory _description) = designContract.designs(0);
 
 		Assert.equal(_did, expectedId, "Design id not set properly");
 		Assert.equal(_projectId, projId, 
@@ -94,6 +97,8 @@ contract TestDesign {
 					 "Preview IPFS hash not set properly");
 		Assert.equal(_ipfsHash, "", 
 					 "IPFS hash for the design files not set properly");
+		Assert.equal(_owner, address(du1), "Owner no set properly");
+		Assert.equal(_description, "A description", "Description no set properly");
 
 		// because the user is just a proxy, and this test is the owner of TDBay, the fee is deposited here as well
 		Assert.equal(address(this).balance, userInitBalance - dcost + _feeValue, 
@@ -109,8 +114,8 @@ contract TestDesign {
 		uint costToDesign = 0.1 ether;
 		//uint _projectId, uint256 _cost, string memory _previewIpfsHash, string memory _ipfsHash
 		(bool r,) = address(du1).call.value(dcost-1)(
-			abi.encodeWithSignature("addDesignBid(uint256,uint256)",
-									projId, costToDesign));
+			abi.encodeWithSignature("addDesignBid(uint256,uint256,string)",
+									projId, costToDesign, ""));
 		Assert.isFalse(r, "Call should have failed because of not enough funds.");
 	}
 
@@ -120,7 +125,7 @@ contract TestDesign {
 
 		uint costToDesign = 0.1 ether;
 		(bool r,) = address(du1).call.value(dcost)(
-			abi.encodeWithSignature("addDesignBid(uint256,uint256)",
+			abi.encodeWithSignature("addDesignBid(uint256,uint256,string)",
 									projId, 
 									costToDesign));
 		Assert.isFalse(r, "Call should have failed because of  invalid project.");

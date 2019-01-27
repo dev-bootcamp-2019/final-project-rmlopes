@@ -74,12 +74,13 @@ contract TestTDBay {
 		uint initUserBalance = address(theUser).balance;
 
 		string memory name = "MyProject";
+		string memory description = "Simply a test project with a short description \n but including new lines";
 		uint expectedId = 0;
 		uint expectedFee  = pcost * fee / feeRate;
 		//tdbcontract.addProject.value(pcost)(name);
-		theUser.addProject(name, pcost);
+		theUser.addProject(name, description, pcost);
 
-		(uint _id, ,string memory _name, address payable _owner,,) = tdbcontract.projects(0);
+		(uint _id, ,string memory _name, address payable _owner,,,) = tdbcontract.projects(0);
 		Assert.equal(_name, name, "Project name not set properly.");
 		Assert.equal(_id, expectedId, "Project id not set properly.");
 		Assert.equal(_owner, address(theUser), "Project owner not set properly.");
@@ -105,39 +106,9 @@ contract TestTDBay {
 	function testAddProjectNotEnoughFunds() public{
 		string memory name = "MyProject";
 		(bool r, ) = address(tdbcontract).call.value(1)(
-			abi.encodeWithSignature("addProject(string)",name));
+			abi.encodeWithSignature("addProject(string, string)",name));
 		Assert.isFalse(r, "Project creation should have failed.");
 	}
-
-	// Test withdrawal by the owner
-	function testWithdrawal() public{
-		uint initBalanceOwner = address(this).balance;
-		uint initBalanceContract = address(tdbcontract).balance;
-		uint _value = 1;
-		tdbcontract.withdraw(_value);
-		Assert.equal(address(tdbcontract).balance, 
-					 initBalanceContract - _value, 
-					 "Value not deduced.");
-		Assert.equal(address(this).balance, 
-			         initBalanceOwner + _value, 
-			         "Value not deduced.");
-	}
-
-	// Test withdrawal failure, beacuse excess ammount
-	function testWithdrawalExcess() public{
-		uint _value = pcost * 2;
-		(bool r, ) = address(tdbcontract).call(
-			abi.encodeWithSignature("withdraw(uint256)",_value));
-		Assert.isFalse(r, "Withdrawal should have failed because of ammount.");	
-	}
-
-	// Test withdrawal failure, beacuse not owner
-	function testWithdrawalNotOwner() public{
-		uint _value = 1;
-		(bool r, ) = address(theUser).call(
-			abi.encodeWithSignature("withdraw(uint256)", _value));
-		Assert.isFalse(r, "Withdrawal should have failed because it is not the owner.");	
-	} 
 
 	// Test the update of the costs
 	function testSetCosts() public{
@@ -156,16 +127,6 @@ contract TestTDBay {
 		tdbcontract.setManufactureBidCost(mcost);
 		Assert.equal(tdbcontract.manufactureBidCost(), mcost,
 					 "Manufacture bid cost not updated properly");
-	}
-
-	// Test the update of the project description IPFS file/folder
-	function testUpdateProjectFiles() public{
-		string memory _hash = "QmSNBgrXsAV5gHHBmZzQMu4iWHAWnNc4wy4542bp53jKRA";
-		theUser.updateProjectFiles(_hash, 0);
-
-		(,,,,string memory _ipfsHash,) = tdbcontract.projects(0);
-		Assert.equal(_ipfsHash, _hash,
-					 "Project IPFS hash not updated correctly");
 	}
 
 	function () external payable{}
