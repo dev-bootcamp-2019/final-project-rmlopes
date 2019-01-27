@@ -1,5 +1,4 @@
 // TestTDBay.sol
-
 pragma solidity ^0.5.0;
 
 import "truffle/Assert.sol";
@@ -65,49 +64,6 @@ contract TestTDBay {
 		(uint256 _fee, uint256 _rate) = tdbcontract.projectFee();
 		Assert.equal(_fee, fee, "Fee not set properly");
 		Assert.equal(_rate, feeRate, "Fee not set properly");
-	}
-
-	// Test if the a new project is created correctly
-	function testAddProject() public{
-		uint initBalanceContract = address(tdbcontract).balance;
-		uint initOwnerBalance = address(this).balance;
-		uint initUserBalance = address(theUser).balance;
-
-		string memory name = "MyProject";
-		string memory description = "Simply a test project with a short description \n but including new lines";
-		uint expectedId = 0;
-		uint expectedFee  = pcost * fee / feeRate;
-		//tdbcontract.addProject.value(pcost)(name);
-		theUser.addProject(name, description, pcost);
-
-		(uint _id, ,string memory _name, address payable _owner,,,) = tdbcontract.projects(0);
-		Assert.equal(_name, name, "Project name not set properly.");
-		Assert.equal(_id, expectedId, "Project id not set properly.");
-		Assert.equal(_owner, address(theUser), "Project owner not set properly.");
-
-		//Check contract balance after creating project
-		Assert.equal(address(tdbcontract).balance, 
-					 initBalanceContract + pcost - expectedFee, 
-					 "Project cost funds not stored in contract.");
-
-		Assert.equal(address(this).balance, 
-					 initOwnerBalance + expectedFee, 
-					 "Project fee not transfered to owner.");
-
-		Assert.equal(address(theUser).balance, 
-					 initUserBalance - pcost, 
-					 "Project cost funds not deduced from user.");
-
-		//Check user projects mapping
-
-	}
-
-	// Test if the a new project is created correctly
-	function testAddProjectNotEnoughFunds() public{
-		string memory name = "MyProject";
-		(bool r, ) = address(tdbcontract).call.value(1)(
-			abi.encodeWithSignature("addProject(string, string)",name));
-		Assert.isFalse(r, "Project creation should have failed.");
 	}
 
 	// Test the update of the costs

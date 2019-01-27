@@ -10,7 +10,7 @@ import "../contracts/IDesign.sol";
 import "../contracts/Design.sol";
 import "../contracts/UserProxies.sol";
 
-contract TestDesignIPFSPreviewFiles {
+contract TestDesignIPFSPreviewFilesModifiers {
 
 	uint public initialBalance = 1 ether;
 	TDBay public tdbcontract;
@@ -37,23 +37,40 @@ contract TestDesignIPFSPreviewFiles {
 		designContract.setMaster(tdbcontract);
 	}
 
-	// Tests updating the preview file/folder hash for a design bid
-	function testUpdatePreview() public{
+	// Tests failure updating the preview file/folder with invalid hash
+	function testUpdatePreviewInvalidHash() public{
 		tdbcontract.addProject.value(pcost)("MyProject", "Simply a test project with a short description", "");
 
 		du1 = new DesignUserProxy(address(designContract));
 		du1.addDesignBid.value(dcost)(0, 0.1 ether, "");
 
+		uint dId = 0;
+		(bool r, ) = address(du1).call(
+			abi.encodeWithSignature("updatePreview(uint256,string)", dId,""));
+		Assert.isFalse(r, "Call should have failed because invalid ipfs hash.");		
+	}
+
+	// Tests failure updating the preview file/folder hash for a design bid when not called by the bidder
+	function testUpdatePreviewOwnsDesign() public{
+		uint dId = 0;
+		du2 = new DesignUserProxy(address(designContract));
+		(bool r, ) = address(du2).call(
+			abi.encodeWithSignature("updatePreview(uint256,string)", 
+		 							dId,PREVIEW_IPFS_HASH));
+		Assert.isFalse(r, "Call sould have failed because user does not own the design.");		
+	}
+
+	// Tests failure updating the preview file/folder hash for a design that was already accepted
+	function testUpdatePreviewIsNotBid() public{
+		uint pid = 0;
 		uint designId = 0;
+		tdbcontract.acceptDesign(pid, designId);
+		
 		(bool r,) = address(du1).call(
 			abi.encodeWithSignature("updatePreview(uint256,string)",
 									designId, PREVIEW_IPFS_HASH));
 
-		(,,,,string memory _previewHash,,,) = designContract.designs(designId);
-		Assert.isTrue(r, "Call to updatePreview should succeed.");
-		Assert.equal(_previewHash, PREVIEW_IPFS_HASH, 
-					 "Preview file/folder not updated correctly.");
-
+		Assert.isFalse(r, "Call to updatePreview should fail, not bid anymore.");
 	}
 	
 	function () external payable{}
