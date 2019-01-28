@@ -10,7 +10,8 @@ import { Web3Service } from '../../util/web3.service';
 export class OwnerProjectListComponent implements OnInit {
 
   model = {
-    projects: []
+    projectIds: [],
+    projects:[]
   }
   constructor(private web3Service: Web3Service, 
               private tdbayService: TDBayService) { }
@@ -21,9 +22,20 @@ export class OwnerProjectListComponent implements OnInit {
   }
 
   watchProjects() {
-    this.tdbayService.userProjects$.subscribe((projects) => {
-        this.model.projects = projects;
-        console.log(projects);
+    this.tdbayService.userProjects$.subscribe((projectIds) => {
+        this.model.projectIds = projectIds;
+        this.refreshProjects();
+        console.log(projectIds);
     });
+  }
+
+
+  async refreshProjects(){
+    for (const id in this.model.projectIds) {
+      const tdb = await this.tdbayService.getAbstraction();
+      const deployed = await tdb.deployed();
+      const project = await deployed.projects.call(id);
+      this.model.projects.push(project);
+    }
   }
 }

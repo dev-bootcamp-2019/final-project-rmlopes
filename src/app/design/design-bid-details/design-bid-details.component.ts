@@ -17,7 +17,7 @@ export class DesignBidDetailsComponent extends SimpleIpfsCallback implements OnI
   @Input() bidId;
   @Input() projectOwner;
   @Input() projectState;
-  @Output() bidAccepted = new EventEmitter<Number>();
+  @Output() bidAccepted = new EventEmitter<any>();
   private editMode;
   private account;
   private isOwner = false;

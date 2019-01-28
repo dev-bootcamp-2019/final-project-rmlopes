@@ -90,7 +90,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
   }
 
   async onBidAccepted(e){
-    console.log("BID ACCEPTED: ");
+    console.log("BID ACCEPTED: " + e);
     console.log(e);
       this.setStatus("Initiating transaction. Please wait...")
       try {
@@ -101,7 +101,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
           
           var transaction = await deployed.acceptDesign.sendTransaction(
             this.model.Id, 
-            e.words[0],        
+            e,        
             {from: this.web3Service.currentAccount.value,});
           if (!transaction) {
             this.setStatus('Transaction failed!');
@@ -110,7 +110,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
           }
       } catch (e) {
         console.log(e);
-        this.setStatus('Error creating project; see log.');
+        this.setStatus('Error accepting bid project; see log.');
     }
   }
 

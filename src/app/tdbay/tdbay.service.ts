@@ -61,6 +61,7 @@ export class TDBayService {
   }
 
   public async refreshUserProjects(){
+    //console.log("Updating user projects");
     if(this.TDBay)
       try{
         var deployed = await this.TDBay.deployed();

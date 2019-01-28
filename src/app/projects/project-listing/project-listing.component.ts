@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Web3Service} from '../../util/web3.service';
 import {TDBayService} from '../../tdbay/tdbay.service';
 import { MatSnackBar } from '@angular/material';
+import { BehaviorSubject } from 'rxjs';
 
 declare let require: any;
 const tdbay_artifacts = require('../../../../build/contracts/TDBay.json');
@@ -17,8 +18,10 @@ export class ProjectListingComponent implements OnInit {
   public account: string;
 
   model = {
-    projects: [],
+    projects: []
   };
+
+  private projectIds$ = new BehaviorSubject<[]>([]);
 
   constructor(private web3Service: Web3Service, 
               private tdbayService: TDBayService,

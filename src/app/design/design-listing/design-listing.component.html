@@ -2,6 +2,7 @@
   <app-design-bid-details *ngFor="let bidId of listings"
       [bidId]="bidId"
       [projectState]="0"
-      [projectOwner]="">
+      [projectOwner]=""
+      (bidAccepted)="onBidAccepted($event)">
   </app-design-bid-details>
 </mat-accordion>

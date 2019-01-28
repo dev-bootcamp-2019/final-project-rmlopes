@@ -13,7 +13,7 @@ export class DesignBidListComponent implements OnInit,AfterContentInit {
   @Input() projectId: any;
   @Input() projectOwner: string;
   @Input() projectState: any;
-  @Output() bidAccepted = new EventEmitter<Number>();
+  @Output() bidAccepted = new EventEmitter<any>();
   private bids;
   private abstraction;
 

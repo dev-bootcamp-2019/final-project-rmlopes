@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Web3Service } from '../../util/web3.service';
 import { DesignContractService } from '../design-contract.service';
 import { MatSnackBar } from '@angular/material';
@@ -12,6 +12,8 @@ export class DesignListingComponent implements OnInit {
 
   private account;
   private listings;
+
+  @Output() bidAccepted = new EventEmitter<any>();
 
   constructor(private web3Service: Web3Service,
               private dService: DesignContractService,
@@ -29,5 +31,9 @@ export class DesignListingComponent implements OnInit {
     this.dService.userDesigns$.subscribe((designs) => {
       this.listings = designs;
     })
+  }
+
+  onBidAccepted(e){
+    this.bidAccepted.emit(e);
   }
 }
