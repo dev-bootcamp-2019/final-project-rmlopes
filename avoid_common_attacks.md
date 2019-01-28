@@ -23,3 +23,7 @@ The circuit breaker pattern was implemented in the TDBay contract. All payable f
 ### Withdrawal pattern
 
 The goal is to use the 3DB token (TDBayToken contract) for in app transfers/fees, which is implemented using the ERC20 standard from Openzeppelin that implements the withdrawal pattern (with pull payments). Although the contract is provided, it is not integrated into the remaining smart contracts yet.
+
+# Security Tools
+
+In order to verify the smart contracts Solhint was used after an early run through smartcheck.

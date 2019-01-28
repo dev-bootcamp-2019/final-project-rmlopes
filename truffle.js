@@ -9,6 +9,11 @@ module.exports = {
       host: "localhost",
       port: 8546,
       network_id: "3"
+    },
+    rinkeby: {
+      host: "localhost",
+      port: 8546,
+      network_id: 4,
     }
   },
   solc: {

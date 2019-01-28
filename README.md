@@ -62,9 +62,11 @@ A user opens the web app with the goal of providing manufacturing services. He c
 
 1. Open the app in the browser using Metamask (or a similar browser wallet) connected to the local ganache network. 
 
-2. The default account that was used for migration will allow access to the administration dashboard. There, setup the parameters of the contract. Copy the deployed Design contract address and update the respective parameter. For setting up the address of the 3DBay in the Design contract you can use the shortcut button in the respective dashboard section (bottom of the page).
+2. The default account that was used for migration will allow access to the administration dashboard. There, setup the parameters of the contract. Copy the deployed Design contract address and update the respective parameter. 
 
-3. Create projects and switch account to place design bids (a user cannot place a design bid on his own project). Also, only the owner of the project will have access to all the design bids placed for that project.
+3. Setup the address of the 3DBay in the Design contract, using the shortcut button in the respective dashboard section, at the bottom of the page.
+
+4. Create projects and switch account to place design bids (a user cannot place a design bid on his own project). Also, only the owner of the project will have access to all the design bids placed for that project.
 
 
 

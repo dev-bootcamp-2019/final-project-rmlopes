@@ -324,7 +324,7 @@ contract TDBay is ITDBay, Ownable {
     /** @dev Get the number of projects created 
       * @return The numebr of projects created (currentId)
       */
-    function getNumProjects() public returns (uint256) {
+    function getNumProjects() public view returns (uint256) {
         return currentId;
     }
 
@@ -418,8 +418,8 @@ contract TDBay is ITDBay, Ownable {
         ownsProject(msg.sender, _projectId)
     {
         projects[_projectId].designId = _designId;
-        designContract.acceptBid(_designId);
         projects[_projectId].state = ProjectState.Manufacturing;
+        designContract.acceptBid(_designId);
         emit StateChanged(_projectId, ProjectState.Manufacturing);
     }
 }

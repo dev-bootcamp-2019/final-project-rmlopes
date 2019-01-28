@@ -1,0 +1,10 @@
+# Deployed addresses on Rinkeby:
+
+TDBay:
+0xb529a9061129424d2aaae0e950bc49e0c09e50d5
+
+Design:
+0xe11b710781f677cb91e11f6d077fda5e965c38ea
+
+TDBayToken:
+0x1d93aa144ee1c2ca09dd2e379429f7e3256da2f4
