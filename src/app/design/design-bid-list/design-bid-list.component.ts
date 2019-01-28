@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, Output, EventEmitter } from '@angular/core';
 import { DesignContractService } from '../design-contract.service';
 import { Observable } from 'rxjs';
 
@@ -12,6 +12,7 @@ export class DesignBidListComponent implements OnInit,AfterContentInit {
 
   @Input() projectId: any;
   @Input() projectOwner: string;
+  @Output() bidAccepted = new EventEmitter();
   private bids;
   private abstraction;
 
@@ -48,5 +49,9 @@ export class DesignBidListComponent implements OnInit,AfterContentInit {
         });
     });
     });
+  }
+
+  onBidAccepted(){
+    this.bidAccepted.emit();
   }
 }

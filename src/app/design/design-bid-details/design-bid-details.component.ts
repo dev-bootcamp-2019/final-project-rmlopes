@@ -63,7 +63,7 @@ export class DesignBidDetailsComponent extends SimpleIpfsCallback implements OnI
     const cost = await deployed.getDesignCost.call(this.bidId);
     const owner = await deployed.getOwner.call(this.bidId);
     const description = await deployed.getDescription.call(this.bidId);
-    this.imgHash = files;
+    this.imgHash = previewFiles;
     if(previewFiles != '')
       this.ipfsService.getIpfsImage(this);
     this.model.state = state;

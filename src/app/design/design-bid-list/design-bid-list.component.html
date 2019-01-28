@@ -3,5 +3,6 @@
 </mat-card-subtitle>
 <app-design-bid-details *ngFor="let id of bids" 
     [bidId]="id"
-    [projectOwner]="projectOwner">
+    [projectOwner]="projectOwner"
+    (bidAccepted)="onBidAccepted($event)">
 </app-design-bid-details>
