@@ -17,6 +17,12 @@ Projects and Designs have different stages (for instance, first only design bids
 
 The TDBay and Design contracts interact using interfaces (ITDBay and IDesign) in order to provide some upgradability.
 
+### Type safety
+
+The Design contract uses the ITDBay interface type instead of the built-in type address.
+
+
+
 
 
 
