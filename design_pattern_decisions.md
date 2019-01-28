@@ -21,6 +21,10 @@ The TDBay and Design contracts interact using interfaces (ITDBay and IDesign) in
 
 The Design contract uses the ITDBay interface type instead of the built-in type address.
 
+### IPFS
+
+Data storage uses IPFS through the Infura gateway in order to avoid having to run a local IPFS node.
+
 
 
 
