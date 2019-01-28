@@ -31,6 +31,7 @@ export class OwnerProjectListComponent implements OnInit {
 
 
   async refreshProjects(){
+    this.model.projects = [];
     for (const id in this.model.projectIds) {
       const tdb = await this.tdbayService.getAbstraction();
       const deployed = await tdb.deployed();
