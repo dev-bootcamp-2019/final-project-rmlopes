@@ -52,8 +52,8 @@
         </mat-grid-list>
 
         <mat-action-row>
-          <button mat-button *ngIf="isProjectOwner" (click)="onAcceptBid()">AcceptBid</button>
-          <button mat-button *ngIf="isOwner&&!editMode" (click)="editMode=true">Edit</button>
+          <button mat-button *ngIf="isProjectOwner&&projectState==0" (click)="onAcceptBid()">AcceptBid</button>
+          <button mat-button *ngIf="isOwner&&!editMode&&projectState==0" (click)="editMode=true">Edit</button>
           <button mat-button *ngIf="editMode" (click)="onSave()">Save</button>
         </mat-action-row>
 </mat-expansion-panel>

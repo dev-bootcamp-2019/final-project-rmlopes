@@ -4,5 +4,6 @@
 <app-design-bid-details *ngFor="let id of bids" 
     [bidId]="id"
     [projectOwner]="projectOwner"
+    [projectState]="projectState"
     (bidAccepted)="onBidAccepted($event)">
 </app-design-bid-details>

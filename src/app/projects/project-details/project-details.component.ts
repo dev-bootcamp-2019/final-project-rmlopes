@@ -89,6 +89,31 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
     this.ipfsService.addImage(this);
   }
 
+  async onBidAccepted(e){
+    console.log("BID ACCEPTED: ");
+    //console.log(e);
+      this.setStatus("Initiating transaction. Please wait...")
+      try {
+        var deployed = await this.tdbService.getAbstraction().deployed();
+
+          console.log("Sending transaction from " + this.web3Service.currentAccount.value);
+          console.log(this.model);
+          
+          var transaction = await deployed.acceptDesign.sendTransaction(
+            this.model.Id, 
+            e.words[0],        
+            {from: this.web3Service.currentAccount.value,});
+          if (!transaction) {
+            this.setStatus('Transaction failed!');
+          } else {
+            this.setStatus('Transaction complete!');
+          }
+      } catch (e) {
+        console.log(e);
+        this.setStatus('Error creating project; see log.');
+    }
+  }
+
   async ipfsImageCallback(imgHash){
       console.log(event);
       this.setStatus("Initiating transaction. Please wait...")

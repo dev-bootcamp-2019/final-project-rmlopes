@@ -12,7 +12,8 @@ export class DesignBidListComponent implements OnInit,AfterContentInit {
 
   @Input() projectId: any;
   @Input() projectOwner: string;
-  @Output() bidAccepted = new EventEmitter();
+  @Input() projectState: any;
+  @Output() bidAccepted = new EventEmitter<bigint>();
   private bids;
   private abstraction;
 
@@ -51,7 +52,7 @@ export class DesignBidListComponent implements OnInit,AfterContentInit {
     });
   }
 
-  onBidAccepted(){
-    this.bidAccepted.emit();
+  onBidAccepted(e){
+    this.bidAccepted.emit(e);
   }
 }

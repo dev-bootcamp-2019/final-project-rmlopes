@@ -59,7 +59,7 @@
         </mat-grid-tile>
       </mat-grid-list>
     
-    <app-design-bid-list *ngIf="isOwner" [projectId]="model.Id" [projectOwner]="model.Owner"></app-design-bid-list>
+    <app-design-bid-list *ngIf="isOwner" [projectState]="model.State" [projectId]="model.Id" [projectOwner]="model.Owner" (bidAccepted)="onBidAccepted($event)"></app-design-bid-list>
     
     <app-new-design-bid *ngIf="!hideBid" (bidAdded)="onBid($event)" [projectId]="model.Id" [projectName]="model.Name"></app-new-design-bid>
 
@@ -67,6 +67,6 @@
         <button mat-button *ngIf="isOwner&&!editMode" (click)="editMode=true">Edit</button>
         <button mat-button *ngIf="editMode" (click)="onSave()">Save</button>
         <button mat-button *ngIf="editMode" (click)="editMode=false">Cancel</button>
-        <button mat-button *ngIf="!isOwner" (click)="hideBid=false">Add Design Bid</button>
+        <button mat-button *ngIf="!isOwner&&model.State==0" (click)="hideBid=false">Add Design Bid</button>
     </mat-action-row>
 </mat-expansion-panel>

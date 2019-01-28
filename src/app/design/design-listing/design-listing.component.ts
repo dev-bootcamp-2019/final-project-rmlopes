@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Web3Service } from '../../util/web3.service';
 import { DesignContractService } from '../design-contract.service';
 import { MatSnackBar } from '@angular/material';

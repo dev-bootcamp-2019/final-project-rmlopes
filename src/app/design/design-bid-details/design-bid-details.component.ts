@@ -16,7 +16,8 @@ export class DesignBidDetailsComponent extends SimpleIpfsCallback implements OnI
 
   @Input() bidId;
   @Input() projectOwner;
-  @Output() bidAccepted = new EventEmitter();
+  @Input() projectState;
+  @Output() bidAccepted = new EventEmitter<bigint>();
   private editMode;
   private account;
   private isOwner = false;
@@ -108,7 +109,7 @@ export class DesignBidDetailsComponent extends SimpleIpfsCallback implements OnI
   }
 
   onAcceptBid(){
-    this.bidAccepted.emit();
+    this.bidAccepted.emit(this.bidId);
   }
 
   onSave(){
