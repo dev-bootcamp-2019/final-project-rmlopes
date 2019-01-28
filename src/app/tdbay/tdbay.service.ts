@@ -60,7 +60,7 @@ export class TDBayService {
       }
   }
 
-  private async refreshUserProjects(){
+  public async refreshUserProjects(){
     if(this.TDBay)
       try{
         var deployed = await this.TDBay.deployed();

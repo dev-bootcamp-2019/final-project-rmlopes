@@ -91,7 +91,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
 
   async onBidAccepted(e){
     console.log("BID ACCEPTED: ");
-    //console.log(e);
+    console.log(e);
       this.setStatus("Initiating transaction. Please wait...")
       try {
         var deployed = await this.tdbService.getAbstraction().deployed();
