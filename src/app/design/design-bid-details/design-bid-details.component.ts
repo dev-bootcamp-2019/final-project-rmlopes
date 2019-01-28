@@ -95,6 +95,8 @@ export class DesignBidDetailsComponent extends SimpleIpfsCallback implements OnI
             this.setStatus('Transaction failed!');
           } else {
             this.imgInitialized = true;
+            this.imgHash = imgHash;
+            this.editMode = false;
             this.setStatus('Transaction complete!');
           }
       } catch (e) {
@@ -115,7 +117,6 @@ export class DesignBidDetailsComponent extends SimpleIpfsCallback implements OnI
   onSave(){
     console.log(this.imgPath);
     this.setStatus("Uploading image to IPFS. This may take a while. The transaction will be launched when it is ready.")
-    this.editMode = false;
     this.ipfsService.addImage(this);
   }
 }

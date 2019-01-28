@@ -85,8 +85,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
   async onSave(){
     console.log(this.imgPath);
     this.setStatus("Uploading image to IPFS. This may take a while. The transaction will be launched when it is ready.")
-    this.editMode = false;
-    this.ipfsService.addImage(this);
+    this.ipfsService.addImage(this);    
   }
 
   async onBidAccepted(e){
@@ -132,6 +131,8 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
             this.setStatus('Transaction failed!');
           } else {
             this.model.IPFSHash = imgHash;
+            this.imgHash = imgHash;
+            this.editMode = false;
             this.setStatus('Transaction complete!');
           }
       } catch (e) {

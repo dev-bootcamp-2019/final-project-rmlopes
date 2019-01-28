@@ -44,7 +44,7 @@ export class SimpleIpfsService {
       //this.newHash$.next(imgHash);
       //window.dispatchEvent(new CustomEvent('hash-ready', {detail: [id, imgHash]}));
       caller.ipfsImageCallback(imgHash);
-      return imgHash;
+      //return imgHash;
     }
   }
 

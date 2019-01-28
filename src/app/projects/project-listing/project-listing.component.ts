@@ -21,27 +21,12 @@ export class ProjectListingComponent implements OnInit {
     projects: []
   };
 
-  private projectIds$ = new BehaviorSubject<[]>([]);
-
   constructor(private web3Service: Web3Service, 
               private tdbayService: TDBayService,
               private matSnackBar: MatSnackBar,) { }
 
   ngOnInit() {
     console.log('ProjectListing OnInit: ' + this.web3Service);
-    // this.web3Service.artifactsToContract(tdbay_artifacts)
-    //   .then((TDBayAbstraction) => {
-    //     this.TDBay = TDBayAbstraction;
-    //     this.TDBay.deployed().then(deployed => {
-    //       console.log(deployed);
-    //       this.model.projects = deployed.fetchProjects.call().then( projects => {
-    //         console.log(projects);
-    //         this.model.projects = projects;
-    //       });
-          
-    //     });
-
-    //   });
     this.watchProjects();
   }
 
