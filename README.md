@@ -45,23 +45,23 @@ A user opens the web app with the goal of providing manufacturing services. He c
 
 `cd final-project-root`
 
-1. Setup the client libraries to run locally, in the project directory:
+3. Setup the client libraries to run locally, in the project directory:
 
 `npm install`
 
-2. Compile the smart contracts
+4. Compile the smart contracts
 
 `truffle compile`
 
-3. Deploy the smart contracts to the local network
+5. Deploy the smart contracts to the local network
 
 `truffle migrate`
 
-4. Run the tests
+6. Run the tests
 
 `truffle test`
 
-5. Start the local development server (will start in localhost:4200 by default)
+7. Start the local development server (will start in localhost:4200 by default)
 
 `npm start`
 
