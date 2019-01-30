@@ -39,7 +39,7 @@ A user opens the web app with the goal of providing manufacturing services. He c
 
 1. Clone the repository
 
-`git clone "https://github.com/dev-bootcamp-2019/final-project-rmlopes"`
+`git clone https://github.com/dev-bootcamp-2019/final-project-rmlopes`
 
 2. Go to the project root
 
