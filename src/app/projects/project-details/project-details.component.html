@@ -59,7 +59,11 @@
         </mat-grid-tile>
       </mat-grid-list>
     
-    <app-design-bid-list *ngIf="isOwner" [projectState]="model.State" [projectId]="model.Id" [projectOwner]="model.Owner" (bidAccepted)="onBidAccepted($event)"></app-design-bid-list>
+    <app-design-bid-list *ngIf="isOwner" 
+        [projectState]="model.State" 
+        [projectId]="model.Id" 
+        [projectOwner]="model.Owner" 
+        (bidAccepted)="onBidAccepted($event)"></app-design-bid-list>
     
     <app-new-design-bid *ngIf="!hideBid" (bidAdded)="onBid($event)" [projectId]="model.Id" [projectName]="model.Name"></app-new-design-bid>
 

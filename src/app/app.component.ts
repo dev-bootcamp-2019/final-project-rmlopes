@@ -52,7 +52,8 @@ export class AppComponent implements OnInit {
     this.web3Service.accountsObservable.subscribe((accounts) => {
       this.accounts = accounts;
       this.account = this.accounts[0];  
-      this.welcomeMessage = "Welcome "+this.account +"!";
+      if(this.account)
+        this.welcomeMessage = "Welcome "+this.account +"!";
     });
   }
 

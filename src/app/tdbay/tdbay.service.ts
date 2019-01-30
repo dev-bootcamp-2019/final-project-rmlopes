@@ -60,6 +60,13 @@ export class TDBayService {
       }
   }
 
+  public async forceRefreshProjects(){
+    if(this.TDBay){
+      this.projects=[];
+      this.userProjects=[];
+    }
+  }
+
   public async refreshUserProjects(){
     //console.log("Updating user projects");
     if(this.TDBay)

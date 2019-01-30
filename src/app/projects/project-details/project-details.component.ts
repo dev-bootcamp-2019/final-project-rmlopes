@@ -51,6 +51,11 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
   ngOnInit() {
     console.log("Project Details OnInit: " + this.project);
     this.editMode = false;
+    this.watchAccount();
+    this.loadProjectDetails();
+  }
+
+  loadProjectDetails(){
     var i = 0;
     for(var key in this.model){
       this.model[key] = this.project[i];
@@ -59,7 +64,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
     this.model.Description = Web3.utils.hexToAscii(this.model.Description);
     this.imgHash = this.model.IPFSHash;
     this.ipfsService.getIpfsImage(this);
-    this.watchAccount();
+    this.isOwner = (this.model.Owner === this.account);
   }
 
   setStatus(status) {
@@ -69,7 +74,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
   watchAccount() {
     this.web3Service.currentAccount.subscribe(current => {
         this.account = current;
-        this.isOwner = (this.model.Owner === this.account);
+        this.loadProjectDetails();
     });
   }
 
@@ -106,6 +111,7 @@ export class ProjectDetailsComponent extends SimpleIpfsCallback implements OnIni
             this.setStatus('Transaction failed!');
           } else {
             this.setStatus('Transaction complete!');
+            this.tdbService.forceRefreshProjects();
           }
       } catch (e) {
         console.log(e);
