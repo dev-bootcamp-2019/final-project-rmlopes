@@ -76,5 +76,9 @@ A user opens the web app with the goal of providing manufacturing services. He c
 
 4. Create projects and switch account to place design bids (a user cannot place a design bid on his own project). Also, only the owner of the project will have access to all the design bids placed for that project.
 
+5. The owner of a design can update his bid with the preview image.
+
+6. The owner of the project can accept any of the design bids, after which it is not possible to submit bids anymore, or to edit the bids for that project.
+
 
 
